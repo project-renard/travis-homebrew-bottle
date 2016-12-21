@@ -23,7 +23,7 @@ install:
   - brew unlink boost
 
 script:
-  - brew install --verbose --build-bottle boost --c++11
+  - travis_wait 45 brew install --build-bottle boost --c++11
   - brew bottle boost
 
 before_deploy:
