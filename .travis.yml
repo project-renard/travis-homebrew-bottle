@@ -5,6 +5,12 @@ language: cpp
 os:
   - osx
 
+matrix:
+  include:
+    # start the first coverage early so that it starts before everything else
+    - env: BOTTLE_PACKAGE="gtk+3"
+    - env: BOTTLE_PACKAGE="clutter-gtk"
+
 compiler:
   - clang
 #  - gcc
@@ -20,11 +26,11 @@ before_install:
 
 install:
   - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
-  - brew unlink boost
+  - brew unlink $BOTTLE_PACKAGE
 
 script:
-  - travis_wait 45 brew install --build-bottle boost --c++11
-  - brew bottle boost
+  - travis_wait 45 brew install --build-bottle $BOTTLE_PACKAGE
+  - brew bottle $BOTTLE_PACKAGE
 
 before_deploy:
   - export RELEASE_FILES=$(ls *.bottle*.tar.gz)
